@@ -44,8 +44,20 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
     'rest_framework_simplejwt',
-    'apk',
+    'django_extensions',
+    'apk.apps.ApkConfig',
 ]
+
+# Web Push Configuration
+WEBPUSH_SETTINGS = {
+    "VAPID_PUBLIC_KEY": "BN2M44EU9oDN5W2OfX12728dAdX1fX_Cd1DKjIdyMPiogX4wzUh97CSIalKkP-Ci1ynbVpkqU09hxfLM3H3zwhQ",  # akan digenerate nanti
+    "VAPID_PRIVATE_KEY": "IeE38f0wli-ey2SDleaCTJV8cK7Qj0GwPXpIE-B4Icw",  # akan digenerate nanti
+    "VAPID_ADMIN_EMAIL": "admin@sampahapp.com"
+}
+
+VAPID_PUBLIC_KEY = WEBPUSH_SETTINGS["VAPID_PUBLIC_KEY"].strip()
+VAPID_PRIVATE_KEY = WEBPUSH_SETTINGS["VAPID_PRIVATE_KEY"].strip()
+VAPID_ADMIN_EMAIL = WEBPUSH_SETTINGS["VAPID_ADMIN_EMAIL"]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -101,6 +113,22 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+
+NOMINATIM_CONFIG = {
+    'ENABLED': True,
+    'CACHE_TIMEOUT': 60 * 60 * 24 * 30,  # 30 hari
+    'RATE_LIMIT': 1,  # request per second
+    'TIMEOUT': 10,
+    'USER_AGENT': 'CleanUp_Kupang/1.0 (contact@email.com)',
+}
+
+# GUNAKAN CACHE LOCAL SAJA untuk sementara (komentari Redis)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
 
 AUTH_USER_MODEL = "apk.User"
 
@@ -184,6 +212,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

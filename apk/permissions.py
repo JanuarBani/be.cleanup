@@ -49,8 +49,25 @@ class PermissionTimPengangkut(RolePermission):
 class PermissionAnggota(RolePermission):
     role_read = ["admin", "tim_angkut", "anggota"]
     role_add = ["admin", "tamu"]
-    role_edit = ["admin", "anggota"]
+    role_edit = ["admin", "anggota", "tim_angkut"]
     role_delete = ["admin"]
+
+# permissions.py - Tambah permission khusus
+class CanUpdateAnggotaStatus(BasePermission):
+    """Permission untuk mengupdate status anggota"""
+    
+    def has_object_permission(self, request, view, obj):
+        # Admin bisa update semua
+        if request.user.role == 'admin':
+            return True
+        
+        # Anggota hanya bisa update status mereka sendiri
+        if request.user.role == 'anggota' and obj.user == request.user:
+            # Anggota hanya bisa mengupdate status mereka ke 'aktif' jika bayar
+            if 'status' in request.data:
+                return request.data['status'] == 'aktif'
+        
+        return False
 
 class PermissionTamu(RolePermission):
     role_read = ["admin", "tamu"]

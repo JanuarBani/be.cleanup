@@ -39,7 +39,9 @@ urlpatterns = [
     # ======================
 
     # Standar JWT Login
-    path('api/login/', TokenObtainPairView.as_view(), name='jwt_login'),
+    # path('api/login/', TokenObtainPairView.as_view(), name='jwt_login'),
+     # ✅ LOGIN JWT (CUSTOM + is_active)
+    path('api/login/', CustomLoginView.as_view(), name='jwt_login'),
 
     # Refresh Token
     path('api/token/refresh/', TokenRefreshView.as_view(), name='jwt_refresh'),
